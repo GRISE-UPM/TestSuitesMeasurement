@@ -1,0 +1,375 @@
+<<setup-problem, echo=FALSE, message=FALSE, warning=FALSE, results='hide'>>=
+source("common.R")
+@
+
+\section{Problem description}\label{sec:problem-description}
+
+In this paper, we are using two replications conducted in the industry as running examples. These replications will be referred to as \textbf{Experiment\_PT} and \textbf{Experiment\_EC} to maintain companies' anonymity. PT and EC replications have been described in detail in \cite{Tosun2019} and \cite{dieste.2024}, respectively. We restricted our analysis to the PT and EC industrial replications because the complete source code produced by the participants was available. The goal of each replication was to understand the impact of a development task and the applied treatment (Test-driven development (TDD) and Incremental test-last development (ITLD)) on the external quality during an industry experiment with professionals. External quality is measured with respect to the ratio of passed assertions in acceptance test suites implemented for the tasks. The study aims to help researchers understand the impact of factors other than the treatment itself (e.g., test-driven development) on the findings during the design of experiments. 
+
+\subsection{Measurement Theory}\label{sec:theory}
+
+Measurement theory provides the formal and conceptual foundations for quantifying phenomena through numerical values. In empirical sciences, this involves clearly identifying a measurand (the property to be measured), a measuring instrument (the tool used to obtain the measurement), and a measurement procedure (the method followed to produce the measurement). In the context of software engineering experiments, particularly those involving TDD, these elements are instantiated as follows:
+
+\begin{itemize}
+\item Measurand: The abstract property under study, such as external quality (QLTY) or productivity (PROD).
+
+\item Measuring instrument: The test suite, which provides observable and repeatable outputs (pass/fail) against a software artifact.
+
+\item Measurement procedure: The steps taken to integrate the subject’s code with the test suite, execute the tests, and compute derived metrics.
+\end{itemize}
+
+Our study is particularly concerned with how different measuring instruments (ad-hoc vs. equivalence partitioning test suites) influence the values obtained for QLTY and PROD.
+
+According to international standards such as ISO 5725 \cite{ISO5725}, the concept of accuracy in measurement comprises two distinct components: trueness and precision. \textbf{Trueness} refers to the closeness of the average of multiple measurements to the true value of the measurand. In software experiments, this involves evaluating whether a test suite systematically overestimates or underestimates software quality. \textbf{Precision} refers to the degree of consistency among repeated measurements under the same conditions. This translates to the repeatability of test results when the same test suite is applied multiple times on unchanged code. \textbf{Accuracy} is the overall closeness between a measured value and the true (ideal) value, which depends on both the absence of bias (high trueness) and low variability (high precision).
+
+In our case, precision is generally assumed due to the deterministic nature of automated testing. However, trueness becomes critical, since different test suite design strategies (ad-hoc vs. EP) may lead to systematic biases in how test cases are derived from the requirements, thereby distorting the actual measurement of the software artifact.
+
+\subsection{Experimental replications}\label{sec:design}
+
+We selected the PT and EC replications because they are the only TDD experiments in the literature that provide the complete set of experimental artifacts (tasks, test suites, and raw data) required to apply our methodology. Other TDD experiments identified in our review (see Section II) do not disclose sufficient artifacts to enable a systematic comparison of measuring instruments. PT and EC replications explore two programming strategies: TDD and incremental test-last development (ITLD). TDD requires writing tests before production code, whereas ITLD proceeds inversely. The experimental design is described in Table~\ref{tab:experimental-design}, where the programming strategy is a within-subjects factor. In the first session ITLD was applied, and in the second session, TDD was applied. 
+
+The programming strategies have been applied on two greenfield experimental tasks, namely Mars Rover API (Program\_MR\footnote{Program\_MR and Program\_BSK task specifications are included in \url{https://github.com/GRISE-UPM/TestSuitesMeasurement/tree/master/experimental_tasks}.\label{foot:web}}) \cite{mr} and Bowling Score Keeper (Program\_BSK\footnote{See footnote \ref{foot:web}.}) \cite{bsk}. The production code of Program\_MR has a single class named MarsRover with 366 lines of code. Program\_MR has 10 requirements. The production code of Program\_BSK consists of two classes, BowlingGame and Frame, with 79 and 55 lines of code respectively. Program\_BSK has 14 requirements. Program\_MR and Program\_BSK are crossed across programming strategies to avoid confounding. This type of design is frequent in SE when participants need to receive specific training, and a few experimental subjects are available. Subjects had to write the production code for Program\_MR and Program\_BSK, along with the test case code. In summary, the study context comprises two companies (PT and EC) where TDD experiments were conducted. Four test suites (two for Program\_MR and two for Program\_BSK) were created to measure the experimental results. Two test suites were designed using an ad-hoc method, and the other using Equivalence Partitioning.
+
+The assignment of subjects to groups was performed randomly. 17 and 20 experimental subjects participated in Experiment\_PT and Experiment\_EC, respectively. They were programmers with different degrees of experience, employed in the corresponding companies. In Experiment\_PT, more than 60\% of the subjects have two to ten years of experience in Java. Moreover, around 75\% of the subjects have little experience in unit testing with JUnit, although 65\% have experience in unit testing. None of the subjects had prior experience in TDD. In Experiment\_EC, 50\% of the subjects have between five and ten years of experience in programming, and 10\% have more than ten years of experience. All of them are inexperienced in unit testing and TDD.
+
+
+\begin{figure*}[ht!]
+    \centering
+    \includegraphics[width=\textwidth]{figures/PT_EC_organization.pdf}
+    \caption{PT and EC organization}
+    \label{fig:PTECorganization}
+\end{figure*}
+The experimental design of Experiment\_PT consisted of two periods, during which the participants first used ITLD and later TDD, alternating between the Program\_MR and Program\_BSK tasks in each period. The experiment took place over two days, during which participants were fully dedicated to the experiment and did not perform any of their usual tasks. The organization of activities is outlined in Fig.~\ref{fig:PTECorganization}. On the first day, participants received training on unit testing, tools, slicing, and testable design, followed by the first experimental session. On the second day, participants received specific training on TDD, as well as slicing and testable design oriented toward TDD, concluding the experiment with the second experimental session.
+
+The experimental design of the CE was the same as that used in the Experiment\_PT, although the duration was extended to 2.5 days instead of 2 days. The longer duration was justified by the tools used: in Experiment\_PT, the Java programming language and the JUnit framework were employed, both of which are relatively straightforward to understand. In contrast, Experiment\_EC used C++ and Boost Test, which required more extensive training on the tools. The organization of the experiment is presented in the same Fig.~\ref{fig:PTECorganization}, paralleling the Experiment\_PT. The training activities were the same as in the Experiment\_PT case, with the only difference being the first day, which dedicated more time to Boost Test.
+
+
+Note that this is a convenience sample with professionals from the industry. The test cases are agnostic regarding the developer's knowledge. A participant without knowledge might apply the treatment wrongly, but on average, their performance should be consistently low. This means that ad-hoc test cases should be equivalent to Experiment\_PT test cases, regardless of the values reported in these test cases.
+
+
+
+
+\begin{table}[htb]
+\small
+\centering
+\caption{Experimental design}
+\label{tab:experimental-design}
+\begin{tabular}{llll}
+ &  & \multicolumn{2}{c}{\textbf{Treatment}} \\ \cline{3-4} 
+ &  & (Session 1) & (Session 2) \\
+ &  & ITLD & TDD \\ \cline{2-4} 
+\multirow{2}{*}{\textbf{Group}} & Group $MR \rightarrow BSK$ & MR & BSK \\
+ & Group $BSK \rightarrow MR$ & BSK & MR \\ \cline{2-4} 
+\end{tabular}
+\end{table}
+
+\subsection{Response variables and measurement procedure}
+
+We studied external quality (Variable\_QLTY) and productivity (Variable\_PROD) response variables. Variable\_QLTY represents the software quality measured in terms of compliance with the software requirements. It is the ratio between the number of passed test cases and the number of test cases associated with the requirements met by a programmer (so Variable\_QLTY does not account for non-implemented requirements). Variable\_PROD represents the amount of functionality delivered by programmers. It is measured as the ratio between passed test cases and the total number of test cases.
+
+%\begin{table}[H]
+%\centering
+%\caption{Hypothetical test suite}
+%\label{tab:example-qlty-prod}
+%\begin{tabular}{lr}
+%\hline \hline
+%Req \# & Number of test cases \\
+%\hline
+%1 & 5 \\
+%2 & 11 \\
+%\hline \hline
+%\end{tabular}
+%\end{table}
+
+%For instance, Table~\ref{tab:example-qlty-prod} summarizes a hypothetical test suite composed of 15 test cases, five associated with requirement \#1, and 10 with requirement \#2. During the experiment, a programmer implemented requirement \#1, but not \#2. After running the test cases for requirement \#1, four passed, and one failed. $Variable\_QLTY = \frac{4}{5} = 80\%$ because the programmer has been able to code ''4 out of 5'' aspects of requirement \#1 correctly. However, $Variable\_PROD = \frac{4}{16} = 25\%$ as requirement \#2 has not been addressed. These response variables have been frequently explored in TDD research, e.g., \cite{Erdogmus2005,Fucci2013}, as well as in our previous research, e.g., \cite{Tosun2016,dieste.2024,Tosun2019}. Time is frequently involved in productivity calculations, but in time-limited experiments subjects usually exhaust all available time, rendering that value constant across subjects and thus useless.
+
+Variable\_QLTY and Variable\_PROD were measured using specifically designed \textit{acceptance tests suites}\footnote{The test suites are provided as a single Eclipse workspace containing four projects. They are available as one Eclipse workspace at \url{https://github.com/GRISE-UPM/TestSuitesMeasurement/tree/master/test_suites}.}.
+
+
+TDD test cases are written by participants as part of the development process, acceptance test cases are independently created by the researchers and used solely to assess the correctness and completeness of the implemented functionality. These acceptance test suites serve as standardized measuring instruments for the response variables (QLTY and PROD), and their design directly affects the accuracy of the measurement. To mitigate the human factor, the test suite designers were independent of the researchers conducting the sessions and data analysis. Each suite underwent internal peer review by at least two additional researchers, and discrepancies were resolved by consensus. No flaky tests were observed after repeated executions.
+
+%One test suite was reused from previous experiments \cite{Erdogmus2005,Tosun2016}. It was generated using an \textit{ad-hoc} (AH) strategy and coded in JUnit. Ad-hoc means that a formal procedure to create the test cases has not been used; the authors of the test suites (Program\_MR and Program\_BSK) applied their best judgment to derive a set of test cases from the functional requirements.
+
+%To avoid the mono-method threat to validity \cite{Shadish2002}, we designed new test suites (for Program\_MR and Program\_BSK) using the \textit{equivalence partitioning} (EP) technique, and coded them in JUnit. These tests are used in the measurement of the experimental data. We applied equivalence partitioning according to \cite[Chapter 4]{Myers2011}; details can be found in \cite{Elizabeth2015}.  Later, both test suites were ported to Boost Test.
+
+%The test suites give a percentage (0\%-100\%) as a result. For instance, in the case of Variable\_QLTY, this percentage represents the degree to which the code complies with the software requirements: A 0\% value means that the code does not satisfy any requirement; a 100\% value means that the code satisfies all requirements. 
+
+%\subsection{Characteristics of the Program\_MR and Program\_BSK test suites}
+
+%The AH and EP test suites are composed of a varying number of test classes/methods/assertions, as indicated in Table \ref{tab:characteristics}. Program\_BSK's requirements are well defined, hence the AH and EP test suites exhibit strong similarities: They have the same number of test classes (which are roughly equivalent to functional requirements), and a comparable number of assertions. The EP technique provides a perfect correspondence between test methods and assertions.
+
+%Program\_MR is defined at a high level and misses a stable specification. Consequently, the AH and EP test suites diverge considerably. However, \textit{divergence} does not imply \textit{measurement differences}. The same code can be measured using different test suites and obtain the same measurement results. For instance, the function 
+%\lstinline!int sum(int a, int b){ return a + b; }! 
+%gets a 100\% QLTY with both test suites below:
+%\begin{lstlisting}[caption={Equivalent tests suites, from the measurement viewpoint},label={lst:equivalent}]
+%public class Suite1{
+%	@Test
+%	public void testOnePlusOneGivesTwo() {
+%	     assertEquals(2, sum(1, 1)); }
+%}
+
+%public class Suite2{
+%	@Test
+%	public void testThreePlusTwoGivesFive() {
+%	     assertEquals(500, sum(300, 200)); }
+
+%	@Test
+%	public void testThreePlusMinusTwoGivesOne() {
+%	     assertEquals(300, sum(400, -100)); }
+%}
+%\end{lstlisting}
+
+
+
+%\begin{table}[]
+%\centering
+%\small
+%\caption{Characteristics of the AH and EP test suites}
+%\label{tab:characteristics}
+%\begin{tabular}{lllcc}
+% &  & \textbf{} & \multicolumn{2}{c}{\textbf{Test suite}} \\ \cline{4-5} 
+% &  &  & AH & EP \\ \cline{2-5} 
+%\multirow{6}{*}{\textbf{Task}} & \multirow{3}{*}{Program\_MR} & Test classes & 11 & 9 \\
+% &  & Test methods & 52 & 32 \\
+% &  & Assertions & 89 & 32 \\ \cline{2-5} 
+% & \multirow{3}{*}{Program\_BSK} & Test classes & 13 & 13 \\
+% &  & Test methods & 48 & 72 \\
+% &  & Assertions & 55 & 72 \\ \cline{2-5} 
+%\end{tabular}
+%\end{table}
+
+%From a testing perspective, the AH and EP test suites are largely equivalent based on their ability to achieve the same coverage. When we exercise the test suites on correct implementations of Program\_MR and Program\_BSK, the coverage is almost identical, as shown in Table~\ref{tab:coverage}. Statement coverage is virtually 100\% in all cases. Branch coverage is somewhat smaller but exceeds 90\% (except the AH test suite when applied to the Program\_MR task, which has an 88\% branch coverage). 
+
+%\begin{table}[]
+%\small
+%\centering
+%\caption{Coverage of the AH and EP test suites}
+%\label{tab:coverage}
+%\begin{tabular}{lllrr}
+% &  &  & \multicolumn{2}{c}{\textbf{Test suite}} \\ \cline{4-5} 
+% &  &  & \multicolumn{1}{c}{AH} & \multicolumn{1}{c}{EP} \\ \cline{2-5} 
+%\multirow{4}{*}{\textbf{Task}} & \multirow{2}{*}{Program\_MR} & Statement coverage & 100\% & 100\% \\
+% &  & Branch coverage & 88.1\% & 94.4\% \\ \cline{2-5} 
+% & \multirow{2}{*}{Program\_BSK} & Statement coverage & 100\% & 96.5\% \\
+% &  & Branch coverage & 100\% & 94.4\% \\ \cline{2-5} 
+%\end{tabular}
+%\end{table}
+
+%Given the coverage values, it is reasonable to assume that both test suites give the same, or strongly correlated results, for Variable\_QLTY and Variable\_PROD. Simple correlation analysis as 
+%Pearson's correlation can be used to assess convergent validity \cite[p.67]{Oxford2006}. This test has several assumptions (variables with interval or ratio scales, linearity, and bivariate normality) that our data reasonably meet.
+
+%Table~\ref{tab:correlations} shows the results. All correlations are large ( $r > 0.5$, according to Cohen \cite{Cohen1988}), with the only exception of Variable\_QLTY at Experiment\_PT ($r = 0.41$, quite close to 0.5), and statistically significant (which is remarkable given the limited sample sizes). At the outset, AH and EP test suites seem to provide similar measures; in the case of Experiment\_EC, to a large extent.
+
+%\begin{table}[htb]
+%\small
+%\centering
+%\caption{Correlations between \textit{ad-hoc} and \textit{equivalence partitioning} measures for Experiment\_PT and Experiment\_EC}
+%\label{tab:correlations}
+%\resizebox{\columnwidth}{!}{%
+%<<correlations, results='asis'>>=
+%corrdata <- matrix(0, ncol =1, nrow = 11)
+
+%PT_QLTY <- rcorr(expdata[expdata$Experiment == "PT" & expdata$Instrument == "AH",]$QLTY,
+          %       expdata[expdata$Experiment == "PT" & expdata$Instrument == "EP",]$QLTY)
+
+%PT_PROD <- rcorr(expdata[expdata$Experiment == "PT" & expdata$Instrument == "AH",]$PROD,
+ %                expdata[expdata$Experiment == "PT" & expdata$Instrument == "EP",]$PROD)
+
+%EC_QLTY <- rcorr(expdata[expdata$Experiment == "EC" & expdata$Instrument == "AH",]$QLTY,
+ %                expdata[expdata$Experiment == "EC" & expdata$Instrument == "EP",]$QLTY)
+
+%EC_PROD <- rcorr(expdata[expdata$Experiment == "EC" & expdata$Instrument == "AH",]$PROD,
+%                 expdata[expdata$Experiment == "EC" & expdata$Instrument == "EP",]$PROD)
+
+%corrdata[1] <- "\\begin{tabular}{llrr}"
+%corrdata[2] <- ""
+%corrdata[3] <- "\\multicolumn{1}{c}{Experiment} &"
+%corrdata[4] <- "\\multicolumn{1}{c}{Variable} &"
+%corrdata[5] <- "\\multicolumn{1}{c}{$r$} &"
+%corrdata[6] <- "\\multicolumn{1}{c}{$p-value$} \\\\ \\hline"
+%corrdata[7] <- paste("\\multirow{2}{*}{PT} & QLTY & ", round(PT_QLTY$r[2], digits=2), " & ", ifelse(PT_QLTY$P[2]<0.001, "\\textless 0.001", round(PT_QLTY$P[2], digits=2)), " \\\\", sep = "")
+%corrdata[8] <- paste("& PROD & ", round(PT_PROD$r[2], digits=2), " & ", ifelse(PT_PROD$P[2]<0.001, "\\textless 0.001", round(PT_PROD$P[2], digits=2)), " \\\\ \\hline", sep %= "")
+%corrdata[9] <- paste("\\multirow{2}{*}{EC} & QLTY & ", round(EC_QLTY$r[2], digits=2), " & ", ifelse(EC_QLTY$P[2]<0.001, "\\textless 0.001", round(EC_QLTY$P[2], digits=2)), " \\\\", sep = "")
+%corrdata[10]<- paste("& PROD & ", round(EC_PROD$r[2], digits=2), " & ", ifelse(EC_PROD$P[2]<0.001, "\\textless 0.001", round(EC_PROD$P[2], digits=2)), " \\\\ \\hline", sep = "")
+%corrdata[11]<-"\\end{tabular}"
+%write.table(corrdata,sep="", col.names = FALSE, row.names = FALSE, quote=FALSE)
+%@
+%}
+%\end{table}
+
+\subsection{Problem detection}\label{sec:problem}
+
+Experiment\_PT and Experiment\_EC were analyzed as recommended by Vegas et al. \cite{Vegas2016}, i.e., using a mixed model where \textit{Treatment}, \textit{Task} and \textit{Group} are fixed factors, and \textit{Subject} is a random factor embedded within each \textit{Group}. Note that the test generation technique has not been included in the analysis because it is implicit in the test suite (we have only one test suite per test generation technique). The analysis model using the \textit{lme4} package \cite{lme4} is:
+
+\begin{equation}
+\label{eq:analysis-model}
+Y \sim Treatment + Task + Group + ( 1 | Subject )   
+\end{equation}
+
+where $Y$ can be Variable\_QLTY or Variable\_PROD. We will restrict the discussion to the Variable\_QLTY, but the comments below match Variable\_PROD's behavior as well. Tables~\ref{tab:qlty-analysis-pt} and \ref{tab:qlty-analysis-ec} show the analysis results for Variable\_QLTY at Experiment\_PT and Experiment\_EC, respectively. The numbers between parentheses represent the \textit{standard error} of the \textit{fixed effect} located to its left. The degree of statistical significance is reported using asterisks. The differences between the AH and EP test suites are substantial:
+
+\begin{itemize}
+
+\item The \textit{Task} effect \textbf{reverses depending on the test case definition strategy}. For AH, the effect is negative whereas, for EP, the effect is positive. The changes are dramatic in PT's Variable\_QLTY (from -24.47 to 20.99 percentage points). Differences are statistically significant both for Experiment\_PT and Experiment\_EC.
+
+\item The \textit{Group} effect is \textbf{positive for AH, and void for EP}. The analysis does not give statistically significant results in this case.
+
+\item Fixed effects are \textbf{larger for AH than EP} regardless of the variable (the \textit{Task} at Experiment\_EC is the exception). Standard deviations are also \textbf{larger for AH than EP} in all cases.
+
+\end{itemize}
+
+There is just one coincidence between the AH and EP test suites:
+
+\begin{itemize}
+
+\item The \textit{Treatment} (ITLD vs. TDD) \textbf{is largely unaffected}. The AH and EP test suites give different values, but the sign and the statistical significance is preserved. 
+ 
+\end{itemize}
+
+The AH and EP test suites were deliberately designed to be comparable in terms of superficial characteristics such as the number of test classes, test methods, assertions, and coverage values. This design choice aimed to control for differences in size or coverage, ensuring that observed discrepancies could be attributed primarily to the test design strategy (AH vs. EP).
+
+<<analysis-1, results='hide'>>=
+lm1 <- lmer(QLTY ~  1 +
+              Treatment +
+              Task +
+              Group +
+              (1 | Subject),
+            data = expdata[expdata$Experiment == "PT" &
+                             expdata$Instrument == "AH", ])
+
+lm2 <- lmer(QLTY ~  1 +
+              Treatment +
+              Task +
+              Group +
+              (1 | Subject),
+            data = expdata[expdata$Experiment == "PT" &
+                             expdata$Instrument == "EP", ])
+lm3 <- lmer(QLTY ~  1 +
+              Treatment +
+              Task +
+              Group +
+              (1 | Subject),
+            data = expdata[expdata$Experiment == "EC" &
+                             expdata$Instrument == "AH", ])
+
+lm4 <- lmer(QLTY ~  1 +
+              Treatment +
+              Task +
+              Group +
+              (1 | Subject),
+            data = expdata[expdata$Experiment == "EC" &
+                             expdata$Instrument == "EP", ])
+
+mylm1 <- extract(lm1, 
+                 #include.aic = FALSE, 
+                 include.bic = FALSE, 
+                 include.loglik = FALSE,
+                 #include.nobs = FALSE,
+                 include.groups = FALSE)
+
+mylm2 <- extract(lm2, 
+                 #include.aic = FALSE, 
+                 include.bic = FALSE, 
+                 include.loglik = FALSE,
+                 #include.nobs = FALSE,
+                 include.groups = FALSE)
+
+mylm3 <- extract(lm3,
+                 #include.aic = FALSE,
+                 include.bic = FALSE,
+                 include.loglik = FALSE,
+                 #include.nobs = FALSE,
+                 include.groups = FALSE)
+
+mylm4 <- extract(lm4,
+                 #include.aic = FALSE,
+                 include.bic = FALSE,
+                 include.loglik = FALSE,
+                 #include.nobs = FALSE,
+                 include.groups = FALSE)
+@
+
+\begin{table}[htb]
+\small
+\centering
+\caption{Analysis of the Variable\_QLTY for Experiment\_PT}\label{tab:qlty-analysis-pt}
+<<analysis-2, results='asis'>>=
+texreg(l = list(mylm1, mylm2),
+       single.row = TRUE,
+       custom.model.names = c("AH","EP"),
+       digits = 2,
+       leading.zero = FALSE,
+       caption.above = TRUE,
+       table = FALSE)
+@
+\end{table}
+
+\begin{table}[htb]
+\small
+\centering
+\caption{Analysis of the Variable\_QLTY  for Experiment\_EC}\label{tab:qlty-analysis-ec}
+<<analysis-3, results='asis'>>=
+texreg(l = list(mylm3, mylm4),
+       single.row = TRUE,
+       custom.model.names = c("AH","EP"),
+       digits = 2,
+       leading.zero = FALSE,
+       caption.above = TRUE,
+       table = FALSE)
+@
+\end{table}
+
+Table~\ref{tab:qlty-analysis-ptec-including-AHEP} provides an alternative perspective. We have entered the test suite as a new factor in Eq.~\ref{eq:analysis-model} to estimate the effect of the test suite on the response variable. The line \texttt{InstrumentAH} represents such an effect, with values of 36.35 and 30.53 for Experiment\_PT and Experiment\_EC, respectively. It means that, on average, the AH test suite provides values 36.35\% and 30.53\% higher than the EP test suite. We expected some disagreement between AH and EP, but not such large discrepancies.
+
+<<analysis-4, results='hide'>>=
+lm1 <- lmer(QLTY ~  1 +
+              Treatment +
+              Task +
+              Group +
+              Instrument +
+              (1 | Subject),
+            data = expdata[expdata$Experiment == "PT", ])
+
+lm2 <- lmer(QLTY ~  1 +
+              Treatment +
+              Task +
+              Group +
+              Instrument +
+              (1 | Subject),
+            data = expdata[expdata$Experiment == "EC", ])
+
+mylm1 <- extract(lm1, 
+                 #include.aic = FALSE, 
+                 include.bic = FALSE, 
+                 include.loglik = FALSE,
+                 #include.nobs = FALSE,
+                 include.groups = FALSE)
+
+mylm2 <- extract(lm2, 
+                 #include.aic = FALSE, 
+                 include.bic = FALSE, 
+                 include.loglik = FALSE,
+                 #include.nobs = FALSE,
+                 include.groups = FALSE)
+@
+
+\begin{table}[htb]
+\small
+\centering
+\caption{Analysis of the Variable\_QLTY for Experiment\_PT and Experiment\_EC, including the test suite as a factor}\label{tab:qlty-analysis-ptec-including-AHEP}
+<<analysis-5, results='asis'>>=
+texreg(l = list(mylm1, mylm2),
+       single.row = TRUE,
+       custom.model.names = c("PT","EC"),
+       digits = 2,
+       leading.zero = FALSE,
+       caption.above = TRUE,
+       table = FALSE)
+@
+\end{table}
+
+\begin{framed}
+
+In practice, it implies that the experiment outcomes change depending on the test suites used as a measuring instrument, to the point of obtaining contradictory results.
+
+\end{framed}

@@ -1,0 +1,86 @@
+\section{Related Work}
+\label{sec:relatedwork}
+
+We conducted a Targeted Literature Review (TLR), which is a non-systematic but in-depth search of related works, with the aim of identifying other experiments in TDD. The search string used was: ("test-driven development" OR TDD) AND ("controlled experiment*" OR "empirical study" OR "empirical experiment*" OR "software engineering experiment*") AND ("test suite*" OR "acceptance test*"). Inclusion criteria were:
+(1) at least one treatment based on TDD;
+(2) explicit definition of metrics;
+(3) use of test suites for measurement.
+Exclusion criteria were:
+(1) studies without a comparison group;
+(2) works focused solely on test case generation;
+(3) studies based exclusively on interviews.
+We used the following digital libraries for the search: IEEE Xplore, ACM Digital Library, and Scopus.
+Next, we summarize the works identified.
+
+
+%Several synthesis works on TDD have been published recently, e.g., \cite{Rafique2013,Munir,Bissi2016,Causevic2011}. These works identify 90 empirical publications, including surveys, experience reports, case studies, quasi-experiments, and controlled experiments. At least, another 24 studies have been published in the past years, e.g., \cite{Hilton2016,Romano2016}, thus not being included in the synthesis works\footnote{We exclude our own publications, e.g., \cite{Tosun2016} from these figures.}. Out of those 114 publications, 15 experiments measure external quality, i.e., the response variable Variable\_QLTY used in Experiment\_PT and Experiment\_EC. 13 out of these 15 experiments use test suites for measurement. The listing is available in Table~\ref{tab:allTDD}. Next, we describe these related works grouped by experimental task. 
+
+Note that none of the identified works make the test suite code available to the community. The results of the TLR (summarised in \ref{tab:allTDD} are structured into different groups: tests based on Robert Martin's Bowling Score Keeper (BSK); tests based on ad-hoc experimental tasks; and articles where experimental tasks have not been specified.  Next, we describe the articles found in each of these groups.
+
+
+
+There are many works \textbf{based on BSK}. One of these works is the one developed by \v Cau\v sevi\'c et al. ~\cite{Causevic2012}. The goal of this article is to investigate whether there is a difference in the quality of test cases created using Test-Driven Development (TDD) versus test-last approaches. The evaluation was conducted with 22 students who individually worked on problem implementations, randomly assigned to either the TDD or test-last group. The experiment consisted of two treatments: test-first and test-last,and quality is the response variable. The experimental metrics were based on the source code and test cases created by each participant, as well as their responses to a survey. The design is a between-subjects design. The results show that the total number of test cases with failing assertions was nearly the same for both the TDD and test-last groups.
+The work of Erdogmus et al.~\cite{Erdogmus2005} is similar to that of \v Cau\v sevi'c et al. In both studies, undergraduate students participated in an experiment comparing TDD to a test-last approach. Both groups followed an incremental process, adding new features one at a time and performing regression testing. The experimental design consists of two treatments: test-first and test-last, following a between-subjects design. Response variables are productivity and quality. The experimental metrics were based on acceptance tests. The results concluded that, on average, TDD students wrote more tests, and those who wrote more tests tended to be more productive. %Additionally, the results indicated that the minimum quality increased linearly with the number of programmer-written tests, regardless of the development strategy used.
+The work of Fucci and Turhan~\cite{Fucci2013} also uses the BSK problem as the experimental task and compares TDD with a test-last approach. The experiment involved a correlation study to determine whether the number of tests is a good predictor of external quality and productivity. The participants were 70 students, randomly assigned to either the TDD or test-last group. There are two treatments in a between-subjects design: first-test and last-test. The response variables are number of tests, productivity, and quality. Metrics were based on a questionnaire to gather participants' opinions and an acceptance test suite. The conclusions indicate that TDD neither improves nor deteriorates external quality or productivity when compared to the test-last approach, suggesting that other variables may influence the effects of TDD.
+
+The work of Fucci et al. \cite{Fucci2016} uses the BSK problem to compare TDD with a test-last approach by conducting a replication study with 21 students. The experiment employs a crossover design with two treatments: TDD and TLD. The response variables are effort, quality, and productivity. Metrics are defined as the number of JUnit assert statements within the unit test suite written by each participant (effort), how well the implementation of each user story matches the requirements (quality), and the portion of tasks correctly implemented (productivity). The results do not show significant differences in terms of testing effort, external code quality, or developer productivity. %However, the data revealed a difference based on the order in which TDD and test-last development were applied.
+
+George and Williams \cite{George2004} use the BSK problem to compare TDD with a waterfall-like approach by recruiting 24 professional pair programmers."There are two treatments in a between-subjects design: TDD and TLD. The response variables are effectiveness and quality. The metrics used are the time taken to develop, black-box testing, and code coverage analysis. The experimental results suggest that TDD programmers produce higher-quality code, as they passed 18\% more functional black-box test cases. However, the TDD programmers took 16\% more time. The test suite is availabe to download.  %Statistical analysis of the results showed a moderate correlation between time spent and the resulting quality. Lastly, the programmers in the control group often did not write the required automated test cases after completing their code, suggesting that waterfall-like approaches may not encourage adequate testing.
+
+The work of Munir and Moayyed \cite{Munir2014} uses the BSK problem to compare TDD with test-last development. Thirty-one professional software developers with at least one year of development experience were recruited as subjects. The treatments in a between-subjects design are: TDD and TLD. Response variables are quality and productivity. The metrics used in the experiment were the number of acceptance test cases passed, the complexity of the tests according to McCabe's Cyclomatic complexity, branch coverage, and the number of lines of code and user stories implemented per person. The experiment results showed no significant differences in the number of acceptance test cases passed, McCabe’s Cyclomatic complexity, branch coverage, lines of code per person-hour, or user stories implemented per person-hour. However, static code analysis results were found to be statistically significant in favor of TDD. %Furthermore, the survey results revealed that the majority of developers in the experiment preferred TLD over TDD due to the lower learning curve and the reduced effort required to understand and apply TLD compared to TDD.
+
+Note that most of the previous works based on the BSK problem have recruited students (with the exception of George and Williams \cite{George2004} and Munir and Moayyed \cite{Munir2014}). All these works compare TDD with test-last development (the control group). Metrics based on the number of successfully passed test cases are also common in most of the studies. While some studies, such as those by \v Cau\v sevi\'c ~\cite{Causevic2012} and Fucci et al. \cite{Fucci2016}, show little to no difference in code quality, testing effort, or productivity between the two approaches, other works highlight key advantages of TDD. For example, Erdogmus et al .~\cite{Erdogmus2005} found that TDD participants tended to write more tests and were more productive, and George and Williams \cite{George2004} showed that TDD produced higher-quality code at the expense of increased development time. However, even with these benefits, the work of Munir and Moayyed \cite{Munir2014} indicated a developer preference for the test-last approach due to its lower learning curve and ease of application. In some cases, the increase in testing and quality associated with TDD may come at the cost of complexity and additional effort, which is not always seen as a productivity gain. 
+
+
+There are other groups of studies that \textbf{have used ad-hoc experimental tasks} for evaluation. One such study is that of Geras et al. \cite{Geras2004}, which compares TDD with test-last development using two different programs as experimental tasks. Treatments in a between-subjects design are TDD and ITLD. The response variable is productivity. %Program A is a project time entry business scenario, while Program B involves a create operation and an existing database, incorporating some business and data presentation logic. 
+The subjects were 14 professionals from the software development industry. The metric used in the experiment was productivity, assessed by comparing the overall time required to develop the program with an estimate provided by a group of industry experts. The results indicate that, while there is little or no difference in developer productivity between the two methods, differences were found in the frequency of unplanned test failures. %This may lead to less debugging and more time spent on forward progress within a development project.
+
+
+The work of Gupta and Jalote \cite{Gupta2007} compares TDD with test-last development using two programs. %Program A is a student registration system, where the system registers a student for a program. Program B is a simple ATM system for a consortium of banking organizations. 
+The subjects were 22 students with knowledge of software development. The treatments are TDD and TLD in a between-subjects design. Response variables are quality, effort and productivity. The metrics used in the experiment are the percentage of test cases passed, time taken to develop the program in person-hours, and non-commented lines of code delivered relative to the overall development effort applied. The results suggest that TDD helps reduce overall development effort and improve developer productivity, while the quality of the code appears to be influenced by the amount of testing effort applied during development.
+
+
+The work of Müller and Hagner \cite{Muller2002} compares TDD with a test-last development method, recruiting 19 students as subjects. The experiment is based on a single problem called ''GraphBase,'' which involves implementing the main class of a given graph library. The treatments in a between-subjects design are test-first and test-last. The response variables are time, reliability, and reuse. The metrics used in the experiment were the time spent on implementation, the percentage of passed assertions in the tests, and the number of lines of reused code. The results show that TDD is not necessarily faster, produces less reliable software, and TDD programmers reuse more methods.
+
+Pan\v cur and Ciglari\v c \cite{Pancur2011} compare TDD with iterative test-last development. The subjects were 72 students with some programming knowledge.  The treatments are TDD and TLD in a between-subjects design. The response variables are productivity, code properties, and test characteristics. %Two problems are used for the validation. Program A is a distributed database server with built-in data replication mechanisms and Program B is a chat server.
+The metrics used were the amount of work accomplished in a certain time (productivity), the correctness of program functionality from the customer's viewpoint, and the programmer's viewpoint. The results show that the benefits of TDD compared to iterative test-last development are small and thus relatively unimportant in practice, although the effects are positive.% There is also an indication that test-driven development promotes better branch coverage.
+
+In summary, all the previous works that compare TDD with test-last development have recruited students. There is no consensus on how the quality of the tests is measured. Some works, such as Geras et al. \cite{Geras2004}, found no significant productivity difference, while others, such as Gupta and Jalote \cite{Gupta2007}, reported no important difference in productivity with TDD. Additionally, works like Müller and Hagner \cite{Muller2002} and Pan\v{c}ur and Ciglari\v{c} \cite{Pancur2011} concluded that TDD’s benefits were small, though it promoted better branch coverage. Overall, TDD can improve productivity and testing quality, but its advantages are often minimal, depending on the task and testing effort
+
+
+Finally, there are some works where \textbf{experimental tasks have not been specified}. For example, the work of Pan\v cur et al. \cite{Pancur2003} compares TDD with test-last development in the context of extreme programming, with 34 students as subjects. The treatments in a between-subjects design are TDD and TLD. The response variable is the development process. The metrics are based on code coverage, as well as subjective questions regarding the perception of productivity, effectiveness, and difficulty. The results show that TDD is not substantially different from test-last development for all the metrics.
+
+The work of Vu et al. \cite{Vu2009} conducted an experiment comparing TDD with a test-last development method, involving 14 students. The treatments in a between-subjects design are test-first and test-last. Response variables are productivity, quality, and programmers' perception. The metrics used to compare both approaches were code coverage, number of features implemented, and total hours worked. The results showed that the test-last development approach was more productive and resulted in more tests being written than the TDD counterpart. Factors other than the development approach, such as individual ambition and team motivation, may have had a greater impact than the development method applied. %Although more students expressed a preference for the TDD approach, concerns about learning and applying TDD with unfamiliar technologies were noted.
+
+
+In summary, Pan\v{c}ur et al. and Vu et al. \cite{Vu2009} reveal that the benefits of TDD compared to test-last development are not always true. Factors such as individual motivation and familiarity with technologies seemed to influence outcomes more than the development method itself, despite a preference for TDD among participants
+
+
+
+As conclusion of the works of Table ~\ref{tab:allTDD}, some patterns are easily noticeable:
+
+\begin{itemize}
+
+\item TDD experiments require subjects to code some experimental task. However, task specifications \textbf{are not usually disclosed}. In some cases, not even the name of the task is reported.
+
+\item Measurement is always performed using test suites. However, with the sole exception of George and Williams \cite{George2004}, the tests suites \textbf{are not publicly available}.
+
+\item Analyzed works do not share the test code used in the experiments, which makes it difficult to perform comparisons across studies.
+
+\item Finally, roughly 50\% of the test suites have been created by the researchers themselves; \textbf{the origin of the remaining 50\% is unknown}. The strategy for test suite creation \textbf{is never reported}.
+
+
+
+\end{itemize}
+
+Given the different measures that each test suite yields, TDD experiments may come to different conclusions due to measurement only. The fact that almost 50\% of experiments in Table~\ref{tab:allTDD} use Robert Martin's BSK strengthens our beliefs because our experiments use a modified version of the same task\footnote{See footnote \ref{foot:web}.} and we have already confirmed the impact of the test suite construction strategy on BSK. 
+
+\begin{table*}[htbp]
+\centering
+\caption{Tasks and test suites used by TDD experiments}
+\label{tab:allTDD}
+\resizebox{\textwidth}{!}{%
+    \input{tables/all_tdd_experiments}
+}
+\end{table*}
+

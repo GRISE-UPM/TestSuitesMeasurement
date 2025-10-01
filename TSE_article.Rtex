@@ -1,0 +1,146 @@
+\documentclass[lettersize,journal]{IEEEtran}
+\usepackage{amsmath,amsfonts}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{array}
+\usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
+\usepackage{textcomp}
+\usepackage{stfloats}
+\usepackage{url}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage{cite}
+\usepackage{rotating}
+\usepackage{float} 
+\usepackage{adjustbox}
+\usepackage{pdflscape}
+\usepackage{listings}
+\usepackage{multirow}
+
+\lstset{frame=none, % tblr
+  language=Java,
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\footnotesize\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3,
+  moredelim=[is][\sout]{¡}{¡},
+}
+
+\hyphenation{op-tical net-works semi-conduc-tor IEEE-Xplore}
+% updated with editorial comments 8/9/2021
+
+\begin{document}
+
+\title{How test cases may affect response variable measurement in TDD experiments: an empirical study}
+
+\author{
+    \IEEEauthorblockN{Oscar Dieste\IEEEauthorrefmark{1},
+    Fernando Uyaguari\IEEEauthorrefmark{2},
+    Sira Vegas\IEEEauthorrefmark{1},\\
+    Jose Ignacio Panach\IEEEauthorrefmark{3},
+    Natalia Juristo\IEEEauthorrefmark{1}}
+    
+    \IEEEauthorblockA{\IEEEauthorrefmark{1}Universidad Politécnica de Madrid, Boadilla del Monte, Spain \\ 
+    Email: \{odieste, svegas, natalia\}@fi.upm.es}
+    
+    \IEEEauthorblockA{\IEEEauthorrefmark{2}ETAPA Telecommunications Company, Cuenca, Ecuador \\ 
+    Email: fuyaguar@etapa.net.ec}
+    
+    \IEEEauthorblockA{\IEEEauthorrefmark{3}Universitat de València, Burjassot, Spain \\ 
+    Email: joigpana@uv.es}
+      
+
+\thanks{}% <-this % stops a space
+\thanks{Manuscript received January, 2025}}
+
+% The paper headers
+\markboth{Journal of \LaTeX\ Class Files,~Vol.~14, No.~8, January~2025}%
+{Shell \MakeLowercase{\textit{et al.}}: A Sample Article Using IEEEtran.cls for IEEE Journals}
+
+%\IEEEpubid{0000--0000/00\$00.00~\copyright~2021 IEEE}
+% Remember, if you use this you must call \IEEEpubidadjcol in the second
+% column for its text to clear the IEEEpubid mark.
+
+\maketitle
+
+\begin{abstract}
+\textbf{Background:} Test suites are frequently used to quantify relevant software attributes in experiments in TDD, such as quality or productivity. 
+\textbf{Problem:} We have detected that the same response variable, measured using different test suites, yields different experiment results. 
+\textbf{Aims:} Assess whether differences in different experiments in TDD can be caused by different test suites. 
+\textbf{Method:} Two previous TDD industry experiments have been measured using two different test suites, one generated using an \textit{ad-hoc} method and another using \textit{equivalence partitioning}. The accuracy of the measures has been studied using standard procedures, such as ISO 5725, Bland-Altman and Interclass Correlation Coefficients. 
+\textbf{Results:} The \textit{ad-hoc} test suite yields quality and productivity measurements that depart up to $\pm 60\%$ from the \textit{equivalence partitioning} test suite. However, when both sets of measurements are analyzed, the experimental results do not vary significantly, i.e., the difference TDD vs. control does not change substantially. Measurement differences seem to be related to discrepancies between the specification of the experimental tasks and the test case design technique. 
+\textbf{Conclusions:} The discrepancies in the results of TDD experiments cannot be attributed to using different test suites for measurement. However, caution is advised, as test suites may be influential in some circumstances. 
+\end{abstract}
+
+\begin{IEEEkeywords}
+Test suite, measuring instrument, accuracy, agreement
+\end{IEEEkeywords}
+
+
+\input{introduction}
+\input{RelatedWork}
+\Sexpr{knit_child('problem.Rtex')}
+\input{objectives}
+\Sexpr{knit_child('comparison.Rtex')}
+\Sexpr{knit_child('results.Rtex')}
+\Sexpr{knit_child('discussion.Rtex')}
+\input{conclusions}
+
+\section{Acknowledgments}
+
+This work was partially supported by the Spanish Ministry of Economy and Competitiveness research grant TIN2014-60490-P, SREC (PID2021-123824OB-I00), the Generalitat Valenciana with TENTACLE (CIAICO/2023/089) and the Finish TEKES research.
+
+\bibliographystyle{IEEEtran}
+\bibliography{paper,fernando}
+
+
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{Oscar.jpg}}]
+{Óscar Dieste}  received a degree in Computing from the University of La Coruna and his PhD from the University of Castilla-La ˜Mancha. He is a researcher with the UPM’s School of Computer Engineering. He was previously with the University of Colorado at Colorado Springs (as a Fulbright scholar), the Complutense University of Madrid, and the Alfonso X el Sabio University. His research interests include empirical software engineering and requirements
+engineering.
+\end{IEEEbiography}
+
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{Fernando.jpg}}]
+{Fernando Uyaguari} received his MSc in Software Engineering, and PhD from Technical University of Madrid. His research interests include empirical software engineering and agile development methodologies, in particular test driven development.
+\end{IEEEbiography}
+
+
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{Sira.jpg}}]
+{Sira Vegas}  has been associate professor of software engineering with the School of Computer Engineering at the Technical University of Madrid, Spain, since 2008. Sira belongs to the review board of IEEE Transactions on Software Engineering, and is a regular reviewer of the Empirical Software Engineering Journal. She was program chair for the International Symposium on Empirical Software Engineering and Measurement in 2007.
+\end{IEEEbiography}
+
+
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{Ignacio.png}}]
+{Jose Ignacio Panach} received the Ph.D. degree
+in computer science, from UPV, in 2010.
+He is an associate professor at the Departament
+d’Informàtica of Escola Tàcnica Superior
+d’Enginyeria of Universitat de València since
+2011 and researcher at the ProS Research Center
+in Software Production Methods at the Universitat
+Politècnica de València since 2005. His
+research activities focus on Model-Driven Development,
+usability, and interaction modeling.
+\end{IEEEbiography}
+
+
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{Natalia.jpg}}]
+{Natalia Juristo} has been full professor of software engineering with the School of Computer Engineering at
+the Technical University of Madrid, Spain, since 1997. She was awarded a FiDiPro (Finland Distinguished Professor Program) professorship at the University of Oulu, between 2013-2018. In 2009, Natalia was awarded an
+honorary doctorate by Blekinge Institute of Technology in Sweden. She has been member of several Editorial Boards, including Transactions on SE, Journal of Empirical Software Engineering and Software magazine. For additional details and information please visit: http://www.grise.upm.es/htdocs/miembros/natalia/index.php
+\end{IEEEbiography}
+
+
+
+\end{document}
+
+

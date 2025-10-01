@@ -1,0 +1,6 @@
+INDEX VERSION 1.134+/Users/odieste/Library/CloudStorage/Dropbox/Aplicaciones/Overleaf/TOSEM-TestSuitesMeasurement-Ignacio/test_suites/.metadata/.plugins/org.eclipse.jdt.core
+1865797976.index
+2162905038.index
+4159378076.index
+549504737.index
+1472240563.index

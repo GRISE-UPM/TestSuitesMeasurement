@@ -1,0 +1,33 @@
+\section{Introduction}\label{sec:introduction}
+
+Test-driven development (TDD) research frequently uses the external quality (QLTY) and productivity (PROD) response variables. QLTY is typically measured as the ''amount'' of correct functionality delivered by the developers' code. PROD has a similar definition but is related to a time frame (e.g., the duration of an experimental session). "Functionality" is an abstract concept, not directly observable. In TDD research, test cases are often used as surrogates of functionality.
+
+The problem we aim to study is how test cases may influence the results of the analysis. For example, studies such as the one conducted by Fucci et al. \cite{Fucci.2017} state that testing first or last impacts the results, which is important for its implications on software quality and productivity. Other works, such as Rafique and Misic \cite{Rafique.2013}, emphasize the importance of test case design for reliable measurement. Therefore, how test cases are designed and applied may influence experimental results.
+
+Acceptance test suites are frequently used as measuring instruments to evaluate response variables in software engineering experiments, such as external quality or productivity. However, little attention has been paid to how the design of these test suites may affect the results. In this paper, we investigate to what extent the measurement of response variables in TDD experiments depends on the test suite used, potentially introducing bias or inconsistency in experimental conclusions.
+
+%We have conducted a family of experiments on TDD, as part of the Empirical Software Engineering Industry Lab (ESEIL) project. We used different test suites, as recommended by Shadish et al. \cite{Shadish2002}, to measure Variable\_QLTY and Variable\_PROD values, thus preventing the mono-method threat to validity. We anticipated some degree of discrepancy among measurements, but the differences were much higher than we expected. Some codes measured using one or another test suite exhibited up to $\pm 60\%$ score differences.
+
+Multiple synthesis works on TDD have been published, e.g., \cite{Rafique2013,Munir,Bissi2016,Causevic2011,Turhan-2010-How-EI-TDD,Kollanus-2010-TDD-promising-approach,Makinen-2014-Effects-TDD,Desai-2008-Survey-Evidence-TDD,Hammond-2012-TDD-State-Practice,Ghafari-2020-WhY-Research-TDD-Inconclusive,Sfetsos-2010-Empirical-Studies-Quality-Agile-SLR,Yahya-2014-TDD-contribution-universities,Jones-2004-TDD-Goes-School,Karac-2018-What-Do-We-Really-Know-TDD}. These secondary studies reveal a substantial variability in the results of TDD experiments. Such variability is usually adscribed to artifactual effects, such as sample size, conformance, etc. We wonder whether the test suites used in the measurement process may have an impact as well.
+
+This paper aims to evaluate to what extent test cases influence the measurement of response variables in TDD experiments. In the experimental design, the participants are the developers, the experimental tasks are the software systems to be developed using TDD, the treatments are the development strategies (ad-hoc and equivalence partitioning), and the instruments are the test suites used to measure quality and productivity. The accuracy of the measures has been studied using standard procedures, such as ISO 5725, Bland-Altman, and Interclass Correlation Coefficients. The reasons for measurement differences have been studied using a code baseline. 
+
+Our results show that there are no significant differences in the treatment outcome (TDD vs. control) when different test suites are used. This means that focusing on the test suite is not particularly relevant when designing experiments in TDD.
+Although the discussion is specifically framed in TDD research, measurement using test cases is frequent in software engineering (SE) research, so other SE areas can thus benefit from our findings. Beyond TDD, test suites have also been used as measurement tools in other areas of software engineering. For example, Feldt \cite{feldt1998generating} has applied test cases in the development of fault-tolerant software for a controller in an aircraft arrestment system. Another example is the work of Aniche et al. \cite{Aniche.2022}, who conducted an observational study with 72 software developers who used test cases in different software engineering areas. Thus, we can state that the use of test cases is not specific to TDD.
+
+Apart from studying that variations in test suites do not affect the results of the experiments in TDD, we have these other contributions:
+\begin{itemize}
+
+\item We introduce specialized terminology and methods, borrowed from Metrology, the Natural and the Social sciences, to study the accuracy of the test suites when used as measuring instruments.
+
+\item We assess that the measures made using different test suites yield very different results. The same piece of code may exhibit $\pm 60\%$ score differences depending on the test suite used.
+
+\item We conclude that the main outcome of TDD experiments (TDD vs. control) is not affected by the test suites used as measuring instruments. However, other independent variables may be affected, in particular, the experimental tasks.
+
+\item We argue that the publication of datasets and analysis code, as currently required by some publishers, may be sufficient for ensuring reproducibility \cite{NAP25303,fernandez2019open}, but insufficient to evaluate the influence of the measuring instruments.
+
+\end{itemize}
+
+This paper has been written using reproducible research principles. The manuscript \LaTeX~code  is available at \url{https://github.com/GRISE-UPM/TestSuitesMeasurement} (including data files, Java and R code). Analyses have been carried out using R \cite{R} version 4.0.2 (2020-06-22), and the packages \textit{lme4} \cite{lme4}, \textit{xtable} \cite{xtable}, \textit{texreg} \cite{texreg}, \textit{broom} \cite{broom}, \textit{MethComp} \cite{MethComp}, \textit{Hmisc} \cite{Hmisc}, and \textit{emmeans} \cite{emmeans}.
+
+The paper is structured as follows: Section~\ref{sec:relatedwork} shows related works. Section~\ref{sec:problem-description} describe the research problem. Section~\ref{sec:objectives} sets out the research goals. In Section~\ref{sec:comparison} we introduce the terminology and methods used in Metrology and other sciences for the comparison of measuring instruments. The actual comparison is performed in Section~\ref{sec:comparison-results}. We discuss the implication of our findings in Section~\ref{sec:discussion} and, finally, provide some recommendations in Section~\ref{sec:conclusions}.

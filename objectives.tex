@@ -1,0 +1,53 @@
+% !TEX encoding = UTF-8 Unicode
+\section{Research question and methodology}\label{sec:objectives}
+
+\subsection{Research question}\label{sec:questions}
+
+Test suites are being used routinely as measuring instruments in TDD experiments, e.g., \cite{Causevic2012,Desai2009,Erdogmus2005,Fucci2013}. TDD experiments are being combined through meta-analysis \cite{rafique2012effects}. We have shown that the experimental results are conditional on the test suites. The same applies, indirectly, to the meta-analyses based on those TDD studies. 
+
+We are concerned about the use of test suites as measuring instruments. \textbf{We aim to evaluate to which degree similar test suites, e.g., with comparable branch coverage, give different results in TDD experiments}. \textbf{A better understanding of the role of test suites for measurement will provide decision criteria for the selection or construction, utilization, and sharing of test suites in SE experiments}.
+
+To the best of our knowledge, \textbf{this problem has not been addressed in the SE literature}. Given its relevance for the TDD community (and from a general perspective to the entire empirical SE), this paper sets out the following research question:
+
+%\vspace{0.8mm}
+
+%\textbf{RQ1:} \textit{How} can we assess the accuracy of the measures obtained using test suites?
+
+%\vspace{0.8mm}
+
+%Measurement is a complex process. Scientists and engineers have developed specific procedures to assess the accuracy of measures, and compare measurement instruments. These procedures can be applied to test suites.
+
+\vspace{0.8mm}
+
+\textbf{RQ1:} \textit{How much} do the measurements obtained with TestSuite\_AH and TestSuite\_EP differ from each other?
+
+\vspace{0.8mm}
+
+The statistical analyses in Section~\ref{sec:problem-description} yield clearly different results. However, such results do not provide an indication of the extent to which TestSuite\_AH and TestSuite\_EP differ from each other. Common sense suggests that the differences are large, but we miss a concrete description of \textit{how large} they are.
+
+\subsection{Research method}\label{sec:method}
+
+The research question posed above implies the comparison of two sets of measurements (AH and EP) generated using different test suites (\textit{ad-hoc} and \textit{equivalence partitioning}). 
+
+The comparison of measurements is not new in SE. Quite a few papers address the comparison of metrics, e.g., \cite{basili1981evaluating,zhang2007performance,zhao1998comparison,jiang2008comparing,di2007comparing}. However, these works do not put the metrics themselves into question, but they typically examine their predictive ability to choose the ''best'' metric for a purpose. Other works, e.g., \cite{meneely2012validating} provide metric validation criteria, but these criteria do not include procedures and methods to compare metrics and decide which ones are more accurate. To conclude, \textbf{we miss theoretical foundations to analyze and compare measurements in SE}.
+
+In turn, different scientific disciplines (e.g., Medicine, Psychology, and Metrology particularly) have dealt with the problem of comparing measurements, giving rise to different comparison approaches. To the best of our knowledge, none of them has been used in SE so far.
+
+%\textbf{To answer RQ1}, we provide in Section~\ref{sec:comparison} an abridged description of the different comparison approaches that apply to our research problem.
+
+\textbf{To answer RQ1}, we apply in Section~\ref{sec:comparison-results} all suitable comparison procedures to the TestSuite\_AH and TestSuite\_EP datasets, with a threefold purpose: (1) quantify how large the differences between measurements are, (2) illustrate how the different comparison approaches can be used in practice, and (3) choose the simplest procedure for routinely use in SE.
+
+\subsection{Threats to validity}\label{sec:threads}
+
+We have classified the threats to the validity of our experiment based on the classification provided by Wohlin \cite{wohlin.2012}. We described each type of threat as avoided, incurred, and mitigated.
+
+\textbf{Conclusion validity}. This threat is concerned with issues that affect the ability to draw the correct conclusions about relationships between the treatment and the outcome. Threats of this type are: 1) Low statistical power: This appears when the sample size is low. We avoid this threat since we have 17 subjects in Experiment\_PT and 20 in Experiment\_EC. This is not a small sample considering that they are experts from the industry, where recruitment is not easy. 2) Fishing: This appears when experimenters are looking for a specific result. We avoid this threat since raw data was captured in previous experiments with goals different from the current one. 3) Random heterogeneity of subjects: This appears when the sample size is too heterogeneous, and this variation is larger than the variation produced by the treatment. We avoid this threat since the subjects of both companies have similar profiles, i.e., experts at programming.
+
+\textbf{Internal validity}. This threat is concerned with influences that may affect the dependent variable concerning causality that the researchers are unaware of. Threats of this type appear due to 
+1) Instrumentation: This appears when the instruments used in the experiment may affect the results. We suffer from this threat because measurers may need to change some code to avoid compilation problems. Those changes may fix issues or add functionality that the code author did not intend to fix/add, yielding unfairly higher Variable\_QLTY values. 
+2) Selection: How the subjects are recruited may affect the results. In our experiment, the participants are volunteers of two companies. 3) Compensatory rivalry: This appears when the subjects receive different treatments. We avoided this threat since all the subjects received the same treatment.
+
+\textbf{Construct validity}. This threat is concerned with generalizing the results of the experiment to the concept or theory behind the experiment. Threats of this type may be caused by 1) Inadequate preoperational explication of constructs: This happens when the theory behind the treatment has not been sufficiently defined. We avoided this threat since the use of test cases to evaluate code is widely known and practiced. 2) Mono-operation bias: This appears when experiments with only one factor may underrepresent the construct. We avoid this threat by designing new test suites. 3) Problem homogeneity: This appears when experimental problems are too homogeneous to generalize the results to other problems. We mitigated this threat by choosing problems from different domains. Program\_MR is an API for moving a rover, while Program\_BSK aims to keep track of scores in a bowling game.
+
+\textbf{External validity}. This threat is concerned with conditions that limit the ability to generalize the results of experiments to industrial practice. Threats of this type are: 1) Interaction of selection and treatment: This appears when the subjects are not representative of the population that we want to generalize. We avoided this threat since the subjects are professionals in software development. 2) Interaction of setting and treatment: This appears when the experiment setting or the material is not representative of our study target. We mitigated this threat since the problems used in the experiment are widely used in empirical experiments, which facilitates their validation. To increase the external validity, we will perform the analysis on more replications, using different experiment objects and related measurement instruments. In particular, future work should explore alternative test suite design techniques beyond ad-hoc and equivalence partitioning, since the robustness of our results may depend on the characteristics and quality of the test suites employed. 3) Interaction of history and treatment: This appears when the experiment is conducted at a special time that may affect the results. Raw data was collected in two companies at different moments.
+

@@ -1,0 +1,134 @@
+<<setup-discussion, echo=FALSE, message=FALSE, warning=FALSE, results='hide'>>=
+source("common.R")
+@
+
+\section{Discussion}\label{sec:discussion}
+
+\subsection{Accuracy of TestSuite\_AH and TestSuite\_EP}
+
+<<bland-altman-analysis-2, results='hide'>>=
+
+# calculation of differences
+auxq <- expdata[c("Instrument", "Program", "QLTY")]
+auxq <- reshape(auxq, idvar = "Program", timevar = "Instrument", direction = "wide")
+auxq <- auxq[c("QLTY.EP", "QLTY.AH")]
+dqlty <- auxq$`QLTY.EP` - auxq$`QLTY.AH`
+md <- mean(dqlty)
+sd <- sd(dqlty)
+lower_limit <- round(md + 2 * sd, 2)
+upper_limit <- round(md - 2 * sd, 2)
+md <- round(md, 2)
+sd <- round(sd, 2)
+@
+
+The interpretation of the ICC is contrived. This fact, in addition to some weaknesses \cite{Bland1990,muller1994critical} of the ICC makes this procedure not that useful as a comparison method. In turn, the expanded uncertainties provided by the ISO and Bland-Altman are self-explanatory. 
+
+Regardless of the comparison method used (ISO5725-3, Bland-Altman, or ICC), the accuracy of TestSuite\_AH and TestSuite\_EP is rather weak. The Bland-Altman method is particularly illustrative in this regard. The difference between two measures taken on the same program can differ up to \Sexpr{round(2 * sd, 2)}\% in either direction. 
+
+The Bland-Altman plot, shown in Fig.~\ref{fig:bland-altman-plot}, is even more illustrative. Only three points, i.e., three programs, are close to the value ''0'' of the vertical axis, which denotes the coincidence between the measurements obtained with TestSuite\_AH and TestSuite\_EP. All other points are 10\%, 20\%, or further apart.
+
+The obvious conclusion is that TestSuite\_AH and TestSuite\_EP are incompatible measuring instruments. They cannot be used together, because the difference between measurements obtained with each of them is too large. Such differences are likely the origin of the different experimental analysis results that we described in Section~\ref{sec:problem-description}.
+
+\subsection{Reason of measurement differences}
+
+Measure differences may have multiple origins, some of them minute details. For instance, the test cases in Listing \ref{lst:equivalent} pass for the Java code \lstinline!int sum(int a, int b){ return a + b; }!, but the test case \lstinline!testThreePlusMinusTwoGivesOne()! fails for the C code \lstinline!unsigned char sum(unsigned char a, unsigned char b){ return a + b; }! (in fact, the code probably would not even compile).
+
+ TestSuite\_AH and TestSuite\_EP are not affected by data types issues, like in the previous example. When Experiment\_PT and Experiment\_EC were conducted, experimental subjects received code stubs including class and method definitions. The reason for the inconsistent measures lies in the type, and number, of test cases defined in each test suite, as we describe next. 
+
+Figure~\ref{fig:deviations_BSK_AH} shows a scatter plot. On the x-axis, we represent the \textit{true value} of a measurement. This true value was obtained using reference code, i.e., code that satisfies all requirements\footnote{The reference code and dataset generation procedures for this section are available as one Eclipse workspace at \url{https://github.com/GRISE-UPM/TestSuitesMeasurement/tree/master/calculation_of_deviations}.}. The task that appears in Figure~\ref{fig:deviations_BSK_AH} is Program\_BSK, and the metric displayed is PROD (the plot is easier to understand using PROD instead of QLTY). The y-axis value is the measured value using TestSuite\_AH. If TestSuite\_AH provided accurate measures, all points would lie in the diagonal line. Departures from the diagonal line represent measurement errors, the larger, the farther apart from the diagonal line the points are. Figure~\ref{fig:deviations_BSK_EP} displays the same information for TestSuite\_EP.
+
+The points in Figure~\ref{fig:deviations_BSK_AH} are scattered around the diagonal line. It implies that TestSuite\_AH captures the meaning of the Variable\_PROD metric. However, individual measures may have large errors. These errors have their primary origin in redundant test cases, i.e., test cases that check the same testing condition. It is fairly easy that \textit{ad-hoc} test case designers (in this case, the researchers aiming to measure Experiment\_PT and Experiment\_EC.) insist on multiple testing of the same requirement, especially when such requirement is perceived as important. Such test cases pass or fail together, causing large up and down variations in the measured values.
+
+The points in Figure~\ref{fig:deviations_BSK_EP} exhibit a different shape. Most points are located behind the diagonal line, meaning that measured values are systematically lower than true values. Measured Variable\_PROD values never exceed 40\%. The heuristics of equivalence partitioning testing explain this behavior. Equivalence partitioning puts special emphasis in \textit{invalid classes} which programmers (and \textit{ad-hoc} test case designers) tend to ignore. For example, in Program\_BSK, each throw has between 0 (no pins knocked down) and 10 pins (all pins knocked down). In general, subjects did not implement code to verify if the number of pins is between 0 and 10 (there is no more than 10 pins in the game); otherwise, it should throw an exception. However, in TestSuite\_EP, there is one test case to check if the pin count is below 0 and another one to check whether the pin count is greater than 10. Actually, the reference code used to create Figures~\ref{fig:deviations_BSK_AH}~and~\ref{fig:deviations_BSK_EP} was obtained from high performing experimental subjects. Overlooking invalid classes lead to systematic low Variable\_PROD values. 
+
+Notice that the choice of test case design technique is not the primary source of measurement inaccuracy. Instead, what matters is whether the design technique is applied appropriately with respect to what the specification expects developers to implement.
+%The reason for the differences between TestSuite\_AH and TestSuite\_EP is what the test suites measure. The results do not show that TestSuite\_EP is worse, but it does not align with the specification of the experimental task. 
+The Equivalence Partitioning technique used to create TestSuite\_EP requires testing invalid conditions but they are not explicitly mentioned in Program\_BSK and Program\_MR specifications. In contrast, TestSuite\_AH rarely tested incorrect conditions. The programmers who participated in the experiments prioritized writing code. 
+%On top of that, the experiments lasted two hours, requiring programmers to focus on success paths. 
+Therefore, when both test suites are exercised, TestSuite\_AH yields better outcomes.
+This context dependency limits the generalizability of test suites as measuring instruments and must be taken into account when interpreting results.
+
+\begin{figure}[!t]
+\centering
+<<deviationsBSKAH>>=
+differences_BSKAH <- read.csv("calculation_of_deviations/deviations_BSK_AH/deviations_BKS_AH.csv")
+
+# aumentar margen izquierdo para que quepa la etiqueta Y
+par(mar = c(5,6,4,2))  # orden: abajo, izquierda, arriba, derecha
+
+plot(
+  differences_BSKAH$referencePROD,
+  differences_BSKAH$measuredPROD,
+  xlim = c(0,100),
+  ylim = c(0,100),
+  xlab = "Reference measure",
+  ylab = "Measure obtained using AH",
+  cex.lab = 2.3,   # tamaño etiquetas ejes
+  cex.axis = 2   # tamaño números en ejes
+)
+abline(a=0, b=1)
+@
+\caption{Deviations from reference value (Program\_BSK using TestSuite\_AH)}
+\label{fig:deviations_BSK_AH}
+\end{figure}
+
+
+\begin{figure}[!t]
+\centering
+<<deviationsBSKEP>>=
+differences_BSKEP <- read.csv("calculation_of_deviations/deviations_BSK_EP/deviations_BKS_EP.csv")
+
+# aumentar margen izquierdo para la etiqueta Y
+par(mar = c(5,6,4,2))  # abajo, izquierda, arriba, derecha
+
+plot(
+  differences_BSKEP$referencePROD,
+  differences_BSKEP$measuredPROD,
+  xlim = c(0,100),
+  ylim = c(0,100),
+  xlab = "Reference measure",
+  ylab = "Measure obtained using EP",
+  cex.lab = 2.3,   # tamaño etiquetas ejes
+  cex.axis = 2   # tamaño números en ejes
+)
+abline(a=0, b=1)
+@
+\caption{Deviations from reference value (Program\_BSK using TestSuite\_EP test suite)}
+\label{fig:deviations_BSK_EP}
+\end{figure}
+
+Although our study focuses on two specific experimental tasks (Program\_MR and Program\_BSK) we believe the findings about the impact of test suite design on measurement accuracy generalize to a broader range of TDD experiments. First, the tasks used differ in domain and complexity: Program\_MR is an API-centered controller with spatial behavior, while Program\_BSK involves iterative game logic and state transitions. This diversity already covers distinct types of software functionality. Second, our targeted literature review revealed that many TDD experiments rely on task-specific test suites, often designed ad hoc and without a documented construction strategy. This suggests that the potential for measurement bias due to test suite design is widespread. Third, from a measurement theory perspective, the accuracy of a measuring instrument—here, the test suite—depends on its alignment with the intended requirements, not the specific nature of the software artifact. Therefore, the discrepancies observed between test suites designed via ad hoc methods and equivalence partitioning may appear in any empirical study where test suites are used as proxies for functional correctness or productivity. While our conclusions are empirically grounded in two tasks, the underlying principles apply broadly and motivate further studies using different experimental objects and domains to reinforce external validity.
+
+\subsection{Recommendations for TDD researchers}\label{sec:recommendations}
+
+When test suites are employed, measurement errors can be attributed to two main causes:
+\begin{itemize}
+
+\item \textbf{The test case design technique}: As noted earlier, the scatter plot in Figure~\ref{fig:deviations_BSK_AH} originates from the presence of redundant test cases in TestSuite\_AH. However, due to the lack of rigor in \textit{ad-hoc} test case design techniques, other types of errors may arise, such as persistently high measurements caused by use cases that always pass; persistently low measurements caused by use cases that never pass; or inconsistent measurements resulting from the use of \textit{flaky} tests, among others. Although these errors did not occur in Experiment\_PT and Experiment\_EC, they cannot be generally ruled out.
+
+\item \textbf{The specification of the task to be performed}: The specifications for Experiment\_PT and Experiment\_EC included only happy paths, excluding error paths. While one might argue that error paths were implicit, this is not a convincing position: TestSuite\_AH rarely exercises error paths. Consequently, the researchers expected measurement results to derive exclusively from the happy paths.
+By contrast, TestSuite\_EP includes both happy paths (valid equivalence classes) and error paths (invalid equivalence classes). It is important to note that TestSuite\_AH and TestSuite\_EP were developed by different researchers for other purposes, which explains why measurement discrepancies were identified later. In any case, as illustrated in Figure~\ref{fig:deviations_BSK_EP}, TestSuite\_EP systematically yields lower-than-expected results because the researchers did not anticipate that error paths would contribute to the measurement. As a result, such error paths were not incorporated either into the specification or into the test cases of TestSuite\_AH.
+
+\end{itemize}
+
+From these two observations, several recommendations naturally follow, which TDD researchers should adopt to enhance the reliability of experimental measurements:
+\begin{itemize}
+
+\item \textbf{Systematic test case design techniques are preferable}, such as Equivalence Partitioning (or basis paths, boundary values, etc.), rather than techniques that allow for subjectivity, such as \textit{ad-hoc} test case design methods. This does not imply that \textit{ad-hoc} techniques are inherently wrong for software testing, but rather that they may introduce risks in the measurement of TDD experiments that systematic techniques avoid.
+
+\item Experimental specifications should \textbf{explicitly define error paths}. Empirical evidence shows that programmers tend to overlook error paths \cite{oliveira2018android,ebert2015exploratory}. Suppose error paths are absent from the specification, and time pressure is present (as is typical in time-constrained experiments). In that case, participants will likely prioritize what is explicitly stated in the specification \cite{salman2023confirmation}, neglecting functionalities that are not explicitly mentioned.
+
+\item Specifications and test cases designed with the chosen technique \textbf{must be appropriately aligned}. This is arguably the most critical recommendation. Researchers must be clear about the experimental outcomes they seek and select the test cases that correspond to those outcomes.
+\end{itemize}
+
+Finally, \textbf{conducting a pilot study} to evaluate the effectiveness of the test cases would be beneficial. In TDD experiments, the usual objective is to produce source code. It is entirely feasible to create a reference implementation or \textit{gold standard}, and to execute the test cases against it. In Figures~\ref{fig:deviations_BSK_AH} and \ref{fig:deviations_BSK_EP}, we systematically enabled and disabled functionalities (happy paths, error paths) subject to measurement, thereby simulating the diversity of code that experimental participants may produce.  This approach allows for a more accurate assessment of test cases' capacity to measure QLTY and PROD.
+
+\subsection{Implications for SE research}
+
+Our findings have been obtained in the area of TDD. However, the use of test cases for measurement does not occur only in TDD. Test cases are relatively frequently used in experimental research in SE, e.g., \cite{kieburtz1996software,knight1986experimental,feldt1998generating}, so it would be expected that the pernicious effects observed in TDD would also appear in other areas.
+
+In fact, we can already anticipate that such pernicious effects exist. We are currently studying the influence of test cases on the measurement of code generated through Model-Driven Development (MDD). Preliminary results show a pattern similar to that observed in TDD: the measurement of the main factor is relatively stable, while the measurement of the tasks can fluctuate to the point of even causing a sign change, that is, if with one test suite $measurement(task_1) > measurement(task_2)$, with another test suite exactly the opposite occurs, i.e., $measurement(task_1) < measurement(task_2)$. It is necessary to be cautious about the causes, since experiments in MDD have different particularities from experiments in TDD, and the research is not yet complete.
+
+It is revealing to observe similar patterns in areas so far apart within SE. We believe that it is essential to understand the implications of test case variability when used to measure response variables in SE experiments. If different test suites give varying results, they challenge the reliability and reproducibility of experimental research. Such inconsistencies raise questions about the criteria used to design and select test cases, and whether existing methodologies are robust enough to handle the diverse testing scenarios. Addressing this variability requires a multifaceted approach, including advancements in automated test generation, improved metrics for test effectiveness, and enhanced tools for test management and analysis. By acknowledging and tackling this issue, the SE community can work towards more reliable and consistent measurement practices.
+
+

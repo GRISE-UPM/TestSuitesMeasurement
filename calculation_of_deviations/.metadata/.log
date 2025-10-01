@@ -1,0 +1,26 @@
+!SESSION 2025-10-01 15:33:27.104 -----------------------------------------------
+eclipse.buildId=4.36.0.20250605-1300
+java.version=21.0.8
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=macosx, ARCH=aarch64, WS=cocoa, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.java.product -keyring /Users/odieste/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch aarch64 -product org.eclipse.epp.package.java.product -keyring /Users/odieste/.eclipse_keyring
+
+!ENTRY ch.qos.logback.classic 1 0 2025-10-01 15:33:28.356
+!MESSAGE Activated before the state location was initialized. Retry after the state location is initialized.
+
+!ENTRY ch.qos.logback.classic 1 0 2025-10-01 15:33:55.937
+!MESSAGE Logback config file: /Users/odieste/Library/CloudStorage/Dropbox/Aplicaciones/Overleaf/TOSEM-TestSuitesMeasurement-Ignacio/calculation_of_deviations/.metadata/.plugins/org.eclipse.m2e.logback/logback.2.7.100.20250418-1315.xml
+!SESSION 2025-10-01 16:17:29.325 -----------------------------------------------
+eclipse.buildId=4.36.0.20250605-1300
+java.version=21.0.8
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=macosx, ARCH=aarch64, WS=cocoa, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.java.product -keyring /Users/odieste/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch aarch64 -product org.eclipse.epp.package.java.product -keyring /Users/odieste/.eclipse_keyring -data /Users/odieste/Library/CloudStorage/Dropbox/Aplicaciones/Overleaf/TOSEM-TestSuitesMeasurement-Ignacio/calculation_of_deviations
+
+!ENTRY ch.qos.logback.classic 1 0 2025-10-01 16:17:30.914
+!MESSAGE Activated before the state location was initialized. Retry after the state location is initialized.
+
+!ENTRY ch.qos.logback.classic 1 0 2025-10-01 16:17:31.995
+!MESSAGE Logback config file: /Users/odieste/Library/CloudStorage/Dropbox/Aplicaciones/Overleaf/TOSEM-TestSuitesMeasurement-Ignacio/calculation_of_deviations/.metadata/.plugins/org.eclipse.m2e.logback/logback.2.7.100.20250418-1315.xml
